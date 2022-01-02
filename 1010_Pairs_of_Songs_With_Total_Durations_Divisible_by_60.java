@@ -2,10 +2,8 @@
 1010. Pairs of Songs With Total Durations Divisible by 60
 
 You are given a list of songs where the ith song has a duration of time[i] seconds.
-
 Return the number of pairs of songs for which their total duration in seconds is divisible by 60. Formally, we want the number of indices i, j such that i < j with (time[i] + time[j]) % 60 == 0.
 
- 
 
 Example 1:
 
@@ -32,31 +30,21 @@ class Solution {
     public int numPairsDivisibleBy60(int[] time) {
         int n = time.length, count=0;
         int [] hashArr = new int [60];
+        
+        //hashing
         for(int i = 0; i < n;i++)
             hashArr[time[i]%60]++;
         
-        //array0 factorial
-        count += pairsOf(hashArr[0]);
+        //array0 pairs
+        count += (hashArr[0]*(hashArr[0]-1))/2;
         
-        //array30 factorial
-        count += pairsOf(hashArr[30]);
+        //array30 pairs
+        count += (hashArr[30]*(hashArr[30]-1))/2;
         
         //counting for remaining pairs 1-59, 2-58, .....
-        for(int i=1, j=59; j>i; i++,j--){
-            int a=hashArr[i], b = hashArr[j];
-            if(a==0 || b==0)
-                continue;
-            count += a*b;
-        }
+        for(int i=1; i<30; i++)
+            count += hashArr[i] * hashArr[60-i];
+
         return count;
     }
-    public int pairsOf(int x){
-        if (x<=1) 
-            return 0;
-        int result =0;
-        for(int i= --x; i>=1; i--)
-            result += i;
-        return result;
-    } 
-    
 }
